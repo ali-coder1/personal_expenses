@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:expenses_managements/models/transaction.dart';
 import 'package:expenses_managements/widgets/chart.dart';
 import 'package:expenses_managements/widgets/transaction_form.dart';
-import 'package:expenses_managements/models/transaction.dart';
 import 'package:expenses_managements/widgets/transaction_list.dart';
 
 void main() => runApp(MyApp());
