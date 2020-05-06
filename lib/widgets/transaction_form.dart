@@ -1,18 +1,17 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
-import 'package:intl/intl.dart';
+class TransactionForm extends StatefulWidget {
+  final Function addTransaction;
+  // final GlobalKey<ScaffoldState> scaffoldKey;
 
-class TransactionAdd extends StatefulWidget {
-  final Function addNewTx;
-  final GlobalKey<ScaffoldState> scaffoldKey;
-
-  TransactionAdd({this.addNewTx, this.scaffoldKey});
+  TransactionForm({this.addTransaction});
 
   @override
-  _TransactionAddState createState() => _TransactionAddState();
+  _TransactionFormState createState() => _TransactionFormState();
 }
 
-class _TransactionAddState extends State<TransactionAdd> {
+class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
 
@@ -23,43 +22,43 @@ class _TransactionAddState extends State<TransactionAdd> {
   void _submittedData() {
     // This is to avoid throw an error when leave amount field empty
     if (_amountController.text.isEmpty) {
-      _showScaffoldKey('Fill Them Correctly');
+      // _showScaffoldKey('Fill Them Correctly');
       Navigator.of(context).pop();
       return;
     }
     final enteredTitle = _titleController.text;
-    final enteredAmount = double.parse(_amountController.text);
+    final enteredAmount = double.tryParse(_amountController.text);
 
     if (enteredTitle.isEmpty || enteredAmount <= 0 || _selectedDate == null) {
-      _showScaffoldKey('Nothing happend: Please try again');
+      // _showScaffoldKey('Nothing happend: Please try again');
       Navigator.of(context).pop();
       return;
     } else {
-      widget.addNewTx(enteredTitle, enteredAmount, _selectedDate);
+      widget.addTransaction(enteredTitle, enteredAmount, _selectedDate);
       Navigator.of(context).pop();
     }
   }
 
-  void _showScaffoldKey(String msg) {
-    widget.scaffoldKey.currentState.showSnackBar(_snackBar(msg));
-  }
+  // void _showScaffoldKey(String msg) {
+  //   widget.scaffoldKey.currentState.showSnackBar(_snackBar(msg));
+  // }
 
-  Widget _snackBar(String msg) {
-    return SnackBar(
-      behavior: SnackBarBehavior.floating,
-      content: Text(msg),
-      action: SnackBarAction(
-        label: 'Undo',
-        onPressed: widget.scaffoldKey.currentState.hideCurrentSnackBar,
-      ),
-    );
-  }
+  // Widget _snackBar(String msg) {
+  //   return SnackBar(
+  //     behavior: SnackBarBehavior.floating,
+  //     content: Text(msg),
+  //     action: SnackBarAction(
+  //       label: 'Undo',
+  //       onPressed: widget.scaffoldKey.currentState.hideCurrentSnackBar,
+  //     ),
+  //   );
+  // }
 
-  void _persentDatePicker() {
+  void _openDatePicker() {
     showDatePicker(
             context: context,
             initialDate: DateTime.now(),
-            firstDate: DateTime(2020),
+            firstDate: DateTime.now().subtract(Duration(days: 20)),
             lastDate: DateTime.now())
         .then((pickedDate) {
       if (pickedDate == null) {
@@ -106,7 +105,7 @@ class _TransactionAddState extends State<TransactionAdd> {
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           textColor: Theme.of(context).primaryColor,
-                          onPressed: _persentDatePicker,
+                          onPressed: _openDatePicker,
                         )
                       ],
                     ),

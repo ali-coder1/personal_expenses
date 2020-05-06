@@ -1,38 +1,37 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 
 import 'package:expenses_managements/models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final DateFormat dateFormat = DateFormat.yMMMd().add_jms();
 
-  final List<Transaction> userTransactions;
-  final Function deletedTransactions;
+  final List<Transaction> transactionsList;
+  final Function deletedTransaction;
 
-  TransactionList({this.userTransactions, this.deletedTransactions});
+  TransactionList({this.transactionsList, this.deletedTransaction});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 550.0,
-        child: userTransactions.isEmpty
+        height: 470.0,
+        child: transactionsList.isEmpty
             ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                     Text(
                       'No transactions yet !!',
                       style: Theme.of(context).textTheme.title,
                     ),
-                    SizedBox(height: 15.0),
                     Container(
-                        height: 200.0,
+                        height: 250.0,
                         child: Image.asset(
                           'assets/images/waiting.png',
                           fit: BoxFit.contain,
                         ))
                   ])
             : ListView.builder(
-                itemCount: userTransactions.length,
+                itemCount: transactionsList.length,
                 itemBuilder: (context, index) {
                   return Card(
                     elevation: 5.0,
@@ -45,19 +44,19 @@ class TransactionList extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: FittedBox(
                                   child: Text(
-                                      '\$${userTransactions[index].amount}')),
+                                      '\$${transactionsList[index].amount}')),
                             )),
                         title: Text(
-                          userTransactions[index].title,
+                          transactionsList[index].title,
                           style: Theme.of(context).textTheme.title,
                         ),
                         subtitle: Text(
-                            dateFormat.format(userTransactions[index].date)),
+                            dateFormat.format(transactionsList[index].date)),
                         trailing: IconButton(
                           icon: Icon(Icons.delete),
                           color: Theme.of(context).primaryColor,
                           onPressed: () =>
-                              deletedTransactions(userTransactions[index].id),
+                              deletedTransaction(transactionsList[index].id),
                         )),
                   );
                   // return Card(

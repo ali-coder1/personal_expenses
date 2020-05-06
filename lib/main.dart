@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:expenses_managements/models/transaction.dart';
 import 'package:expenses_managements/widgets/chart.dart';
-import 'package:expenses_managements/widgets/transaction_add.dart';
+import 'package:expenses_managements/widgets/transaction_form.dart';
+import 'package:expenses_managements/models/transaction.dart';
 import 'package:expenses_managements/widgets/transaction_list.dart';
 
 void main() => runApp(MyApp());
@@ -41,119 +41,72 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
+  // final GlobalKey<ScaffoldState> _key = GlobalKey();
 
-  final List<Transaction> _userTransactions = [
-    Transaction(
-        id: 'tran1',
-        title: 'Black Shoes',
-        amount: 80.99,
-        date: DateTime.now().subtract(Duration(days: 2))),
-    Transaction(
-        id: 'tran2',
-        title: 'White Shoes',
-        amount: 100.99,
-        date: DateTime.now().subtract(Duration(days: 3))),
-    Transaction(
-        id: 'tran3',
-        title: 'Yallow Shoes',
-        amount: 1.99,
-        date: DateTime.now().subtract(Duration(days: 7))),
-    Transaction(
-        id: 'tran4',
-        title: 'Green Shoes',
-        amount: 62.99,
-        date: DateTime.now().subtract(Duration(days: 13))),
-    Transaction(
-        id: 'tran5', title: 'Brown Shoes', amount: 0.99, date: DateTime.now()),
-    Transaction(
-        id: 'tran6', title: 'Red Shoes', amount: 54.99, date: DateTime.now()),
-    Transaction(
-        id: 'tran7', title: 'Blue Shoes', amount: 38.99, date: DateTime.now()),
-    Transaction(
-        id: 'tran8',
-        title: 'Grey Shoes',
-        amount: 44.99,
-        date: DateTime.now().subtract(Duration(days: 5))),
-    Transaction(
-        id: 'tran9',
-        title: 'Blue Shoes',
-        amount: 15.99,
-        date: DateTime.now().subtract(Duration(days: 20))),
-    Transaction(
-        id: 'tran10', title: 'Sky Shoes', amount: 7.99, date: DateTime.now()),
-  ];
+  final List<Transaction> _transactionsList = [];
 
-  List<Transaction> get _recentTransaction {
-    return _userTransactions.where((tx) {
+  List<Transaction> get _recentTransactions {
+    return _transactionsList.where((tx) {
       return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
     }).toList();
   }
 
-  void _addNewTransaction(
-      String txTitle, double txAmount, DateTime selectedDate) {
-    final newTx = Transaction(
+  void _addTransaction(String txTitle, double txAmount, DateTime selectedDate) {
+    final addNewTransaction = Transaction(
         title: txTitle,
         amount: txAmount,
         date: selectedDate,
         id: DateTime.now().toString());
 
     setState(() {
-      _userTransactions.insert(0, newTx);
+      _transactionsList.insert(0, addNewTransaction);
     });
   }
 
   void _deleteTransaction(String id) {
     setState(() {
-      _userTransactions.removeWhere((tx) {
+      _transactionsList.removeWhere((tx) {
         return tx.id == id;
       });
     });
   }
 
-  void _startAddNewTx(BuildContext context) {
+  void _openForm(BuildContext context) {
     showModalBottomSheet(
         context: context,
         builder: (context) {
-          return GestureDetector(
-              onTap: () {},
-              behavior: HitTestBehavior.opaque,
-              child: TransactionAdd(
-                scaffoldKey: _key,
-                addNewTx: _addNewTransaction,
-              ));
+          return TransactionForm(
+            // scaffoldKey: _key,
+            addTransaction: _addTransaction,
+          );
         });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _key,
+        // key: _key,
         appBar: AppBar(
             title: Text('Personal Expenses'),
             centerTitle: true,
             actions: <Widget>[
               IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () => _startAddNewTx(context))
+                  icon: Icon(Icons.add), onPressed: () => _openForm(context))
             ]),
-        body: SingleChildScrollView(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Container(
-              child: Card(
-                  child: Chart(
-            recentTransaction: _recentTransaction,
-          ))),
+        body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+          Card(
+              child: Chart(
+            recentTransactions: _recentTransactions,
+          )),
           TransactionList(
-            userTransactions: _userTransactions,
-            deletedTransactions: _deleteTransaction,
+            transactionsList: _transactionsList,
+            deletedTransaction: _deleteTransaction,
           )
-        ])),
+        ]),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
-          onPressed: () => _startAddNewTx(context),
+          onPressed: () => _openForm(context),
         ));
   }
 }
