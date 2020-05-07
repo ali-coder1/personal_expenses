@@ -28,6 +28,8 @@ class TransactionList extends StatelessWidget {
                         child: Image.asset(
                           'assets/images/waiting.png',
                           fit: BoxFit.contain,
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.5),
                         ))
                   ])
             : ListView.builder(
