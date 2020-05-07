@@ -1,8 +1,8 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
-import 'package:expenses_managements/widgets/chart_bar.dart';
 import 'package:expenses_managements/models/transaction.dart';
+import 'package:expenses_managements/widgets/chart_bar.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
@@ -38,26 +38,25 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print(groupedTransactionValues);
     return Card(
       elevation: 6.0,
       margin: EdgeInsets.all(20.0),
       child: Padding(
         padding: EdgeInsets.all(10.0),
         child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: chartBarTransactionsValues.map((data) {
-              return Flexible(
-                fit: FlexFit.tight,
-                child: ChartBar(
-                  dayLable: data['day'],
-                  spendingAmount: data['amount'],
-                  totalSpendingAmounts: totalSpending == 0.0
-                      ? 0.0
-                      : (data['amount'] as double) / totalSpending,
-                ),
-              );
-            }).toList()),
+          return Flexible(
+            fit: FlexFit.tight,
+            child: ChartBar(
+              dayLable: data['day'],
+              spendingAmount: data['amount'],
+              totalSpendingAmounts: totalSpending == 0.0
+                  ? 0.0
+                  : (data['amount'] as double) / totalSpending,
+            ),
+          );
+        }).toList()),
       ),
     );
   }

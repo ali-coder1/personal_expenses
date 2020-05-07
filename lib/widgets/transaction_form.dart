@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 class TransactionForm extends StatefulWidget {
   final Function addTransaction;
-  // final GlobalKey<ScaffoldState> scaffoldKey;
 
   TransactionForm({this.addTransaction});
 
@@ -22,7 +21,7 @@ class _TransactionFormState extends State<TransactionForm> {
   void _submittedData() {
     // This is to avoid throw an error when leave amount field empty
     if (_amountController.text.isEmpty) {
-      // _showScaffoldKey('Fill Them Correctly');
+      print('Fill Them Correctly');
       Navigator.of(context).pop();
       return;
     }
@@ -30,7 +29,7 @@ class _TransactionFormState extends State<TransactionForm> {
     final enteredAmount = double.tryParse(_amountController.text);
 
     if (enteredTitle.isEmpty || enteredAmount <= 0 || _selectedDate == null) {
-      // _showScaffoldKey('Nothing happend: Please try again');
+      print('Nothing happend: Please try again');
       Navigator.of(context).pop();
       return;
     } else {
@@ -38,21 +37,6 @@ class _TransactionFormState extends State<TransactionForm> {
       Navigator.of(context).pop();
     }
   }
-
-  // void _showScaffoldKey(String msg) {
-  //   widget.scaffoldKey.currentState.showSnackBar(_snackBar(msg));
-  // }
-
-  // Widget _snackBar(String msg) {
-  //   return SnackBar(
-  //     behavior: SnackBarBehavior.floating,
-  //     content: Text(msg),
-  //     action: SnackBarAction(
-  //       label: 'Undo',
-  //       onPressed: widget.scaffoldKey.currentState.hideCurrentSnackBar,
-  //     ),
-  //   );
-  // }
 
   void _openDatePicker() {
     showDatePicker(

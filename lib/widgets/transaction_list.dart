@@ -7,9 +7,9 @@ class TransactionList extends StatelessWidget {
   final DateFormat dateFormat = DateFormat.yMMMd().add_jms();
 
   final List<Transaction> transactionsList;
-  final Function deletedTransaction;
+  final Function deleteTransaction;
 
-  TransactionList({this.transactionsList, this.deletedTransaction});
+  TransactionList({this.transactionsList, this.deleteTransaction});
 
   @override
   Widget build(BuildContext context) {
@@ -56,40 +56,9 @@ class TransactionList extends StatelessWidget {
                           icon: Icon(Icons.delete),
                           color: Theme.of(context).primaryColor,
                           onPressed: () =>
-                              deletedTransaction(transactionsList[index].id),
+                              deleteTransaction(transactionsList[index].id),
                         )),
                   );
-                  // return Card(
-                  //     child: Row(children: <Widget>[
-                  //   Container(
-                  //       padding: EdgeInsets.all(10.0),
-                  //       decoration: BoxDecoration(
-                  //           border: Border.all(
-                  //               width: 1.0,
-                  //               color: Theme.of(context).primaryColor)),
-                  //       margin: EdgeInsets.symmetric(
-                  //           vertical: 10.0, horizontal: 15.0),
-                  //       child: FittedBox(
-                  //         fit: BoxFit.scaleDown,
-                  //         child: Text(
-                  //           '\$${userTransactions[index].amount.toStringAsFixed(2)}',
-                  //           style: TextStyle(
-                  //               fontWeight: FontWeight.bold,
-                  //               fontSize: 20.0,
-                  //               color: Theme.of(context).primaryColor),
-                  //         ),
-                  //       )),
-                  //   Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: <Widget>[
-                  //         Text(userTransactions[index].title,
-                  //             style: Theme.of(context).textTheme.title),
-                  //         Text(
-                  //           dateFormat.format(userTransactions[index].date),
-                  //           style: TextStyle(color: Colors.grey),
-                  //         )
-                  //       ])
-                  // ]));
                 }));
   }
 }

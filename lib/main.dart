@@ -41,8 +41,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // final GlobalKey<ScaffoldState> _key = GlobalKey();
-
   final List<Transaction> _transactionsList = [];
 
   List<Transaction> get _recentTransactions {
@@ -76,7 +74,6 @@ class _MyHomePageState extends State<MyHomePage> {
         context: context,
         builder: (context) {
           return TransactionForm(
-            // scaffoldKey: _key,
             addTransaction: _addTransaction,
           );
         });
@@ -85,7 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: _key,
         appBar: AppBar(
             title: Text('Personal Expenses'),
             centerTitle: true,
@@ -93,16 +89,18 @@ class _MyHomePageState extends State<MyHomePage> {
               IconButton(
                   icon: Icon(Icons.add), onPressed: () => _openForm(context))
             ]),
-        body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Card(
-              child: Chart(
-            recentTransactions: _recentTransactions,
-          )),
-          TransactionList(
-            transactionsList: _transactionsList,
-            deletedTransaction: _deleteTransaction,
-          )
-        ]),
+        body: SingleChildScrollView(
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Card(
+                child: Chart(
+              recentTransactions: _recentTransactions,
+            )),
+            TransactionList(
+              transactionsList: _transactionsList,
+              deleteTransaction: _deleteTransaction,
+            )
+          ]),
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
